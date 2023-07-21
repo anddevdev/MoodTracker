@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:alpha="1"
+        android:rotationX="90"
+        android:rotationY="-90"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:src="@drawable/app_logo" />
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:alpha="1"
+        android:text="APP"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="342dp"
+        android:layout_height="58dp"
+        android:layout_below="@+id/appTitle"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="67dp"
+        android:alpha="1"
+        android:background="@drawable/rounded_button"
+        android:elevation="2dp"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:translationY="100dp" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="227dp"
+        android:layout_height="83dp"
+        android:layout_below="@+id/loginButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginBottom="145dp"
+        android:alpha="1"
+        android:background="@drawable/rounded_button"
+        android:elevation="2dp"
+        android:text="Register"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:translationY="100dp" />
+
+</RelativeLayout>

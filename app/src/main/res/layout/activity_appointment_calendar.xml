@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
+
+    <!-- CalendarView to display the calendar -->
+
+    <!-- Appointment Title -->
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.097" />
+
+    <EditText
+        android:id="@+id/etAppointmentTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Appointment Title"
+        app:layout_constraintBottom_toTopOf="@id/etAppointmentDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendarView"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Appointment Description -->
+    <EditText
+        android:id="@+id/etAppointmentDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Appointment Description"
+        app:layout_constraintBottom_toTopOf="@id/btnAddAppointment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etAppointmentTitle"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <!-- Buttons for appointment actions -->
+    <Button
+        android:id="@+id/btnAddAppointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Add Appointment"
+        app:layout_constraintBottom_toTopOf="@id/btnViewAppointments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etAppointmentDescription" />
+
+    <Button
+        android:id="@+id/btnViewAppointments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="View Appointments"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnAddAppointment" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

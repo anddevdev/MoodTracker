@@ -1,0 +1,118 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <!-- Profile Picture -->
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/profileName"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <!-- Profile Name -->
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <!-- Appointments Button -->
+    <ImageButton
+        android:id="@+id/btnAppointments"
+        android:layout_width="56dp"
+        android:layout_height="47dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_appointments"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/btnMoodTracking"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileName"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <!-- Mood Tracking Button -->
+    <ImageButton
+        android:id="@+id/btnMoodTracking"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_mood_tracking"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
+        app:layout_constraintStart_toEndOf="@+id/btnAppointments"
+        app:layout_constraintEnd_toStartOf="@+id/btnGuidedMeditation"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
+        android:scaleType="fitCenter"/>
+
+    <!-- Guided Meditation Button -->
+    <ImageButton
+        android:id="@+id/btnGuidedMeditation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_guided_meditation"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
+        app:layout_constraintStart_toEndOf="@+id/btnMoodTracking"
+        app:layout_constraintEnd_toStartOf="@+id/btnSupportCommunity"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
+        android:scaleType="fitCenter"/>
+
+    <!-- Support & Community Button -->
+    <ImageButton
+        android:id="@+id/btnSupportCommunity"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_support_community"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
+        app:layout_constraintStart_toEndOf="@+id/btnGuidedMeditation"
+        app:layout_constraintEnd_toStartOf="@+id/btnWellnessContent"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
+        android:scaleType="fitCenter"/>
+
+    <!-- Wellness Content Button -->
+    <ImageButton
+        android:id="@+id/btnWellnessContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_wellness_content"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
+        app:layout_constraintStart_toEndOf="@+id/btnSupportCommunity"
+        app:layout_constraintEnd_toStartOf="@+id/btnGoalSetting"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
+        android:scaleType="fitCenter"/>
+
+    <!-- Goal Setting Button -->
+    <ImageButton
+        android:id="@+id/btnGoalSetting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_goal_setting"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
+        app:layout_constraintStart_toEndOf="@+id/btnWellnessContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
+        android:scaleType="fitCenter"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
