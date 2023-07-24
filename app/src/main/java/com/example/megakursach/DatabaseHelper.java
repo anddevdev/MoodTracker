@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "user_database";
-    private static final int DATABASE_VERSION =7;
+    private static final int DATABASE_VERSION =8;
     private static final String TABLE_USERS = "users";
     private static final String TABLE_MOODS = "moods";
     private static final String COLUMN_USER_ID = "user_id";
@@ -52,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createMoodTableQuery);
 
         String createAppointmentsTableQuery = "CREATE TABLE " + TABLE_APPOINTMENTS + " ("
+                + COLUMN_USER_ID + " INTEGER,"
                 + COLUMN_APPOINTMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_APPOINTMENT_TITLE + " TEXT,"
                 + COLUMN_APPOINTMENT_DESCRIPTION + " TEXT,"

@@ -1,22 +1,28 @@
+
 package com.example.megakursach;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AppointmentsActivity extends AppCompatActivity {
@@ -29,24 +35,53 @@ public class AppointmentsActivity extends AppCompatActivity {
     private EditText etAppointmentDescription;
     private int selectedHour;
     private int selectedMinute;
+    private String loggedInUserEmail;
+    private ListView listView;
 
+    private static final String COLUMN_APPOINTMENT_ID = "appointment_id";
+    private static final String COLUMN_APPOINTMENT_TITLE = "title";
+    private static final String COLUMN_APPOINTMENT_DESCRIPTION = "description";
+    private static final String COLUMN_APPOINTMENT_DATE = "date";
+    private static final String COLUMN_APPOINTMENT_TIME = "time";
+    private static final String TABLE_APPOINTMENTS = "appointments";
+    private static final String COLUMN_USER_ID = "user_id";
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_calendar);
 
-        loggedInUserId = getIntent().getLongExtra("user_id", -1);
+
+
+        loggedInUserEmail = getIntent().getStringExtra("email");
+        loggedInUserId = getUserIdFromDatabase(loggedInUserEmail);
+        Log.d("AppointmentsActivity", "Received user_id: " + loggedInUserId);
 
         calendarView = findViewById(R.id.calendarView);
         btnAddAppointment = findViewById(R.id.btnAddAppointment);
         btnViewAppointments = findViewById(R.id.btnViewAppointments);
         etAppointmentTitle = findViewById(R.id.etAppointmentTitle);
         etAppointmentDescription = findViewById(R.id.etAppointmentDescription);
+        listView = findViewById(R.id.listViewAppointments);
 
         // Set click listener for calendar date selection
-        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            // TODO: Implement actions on date selection, if needed
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // Get the selected date in milliseconds
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
+                long selectedTimestamp = selectedDate.getTimeInMillis();
+
+                // Convert the timestamp to a formatted date string
+                String formattedDate = getFormattedDate(selectedTimestamp);
+
+                // Call the method to show the time picker
+                showTimePickerDialog();
+
+                // Save the formatted date for later use
+                saveFormattedDate(formattedDate);
+            }
         });
 
         // Set click listener for "Add Appointment" button
@@ -60,15 +95,15 @@ public class AppointmentsActivity extends AppCompatActivity {
                 if (title.isEmpty() || description.isEmpty()) {
                     Toast.makeText(AppointmentsActivity.this, "Title and Description cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Get a reference to the database
-                    DatabaseHelper databaseHelper = new DatabaseHelper(AppointmentsActivity.this);
-                    SQLiteDatabase db = databaseHelper.getWritableDatabase();
-
                     // Perform input validation
                     if (loggedInUserId == -1 || date.isEmpty()) {
                         Toast.makeText(AppointmentsActivity.this, "Invalid user ID or empty date", Toast.LENGTH_SHORT).show();
                         return;
                     }
+
+                    // Get a reference to the database
+                    DatabaseHelper databaseHelper = new DatabaseHelper(AppointmentsActivity.this);
+                    SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
                     // Create a ContentValues object to hold the appointment details
                     ContentValues values = new ContentValues();
@@ -97,8 +132,7 @@ public class AppointmentsActivity extends AppCompatActivity {
         btnViewAppointments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Implement logic to view existing appointments
-                // You can open a new activity to display the list of appointments, or any other desired action.
+                viewAppointments();
             }
         });
     }
@@ -112,7 +146,12 @@ public class AppointmentsActivity extends AppCompatActivity {
         return String.format(Locale.getDefault(), "%02d:%02d", hour, minute);
     }
 
-    public void showTimePickerDialog(View v) {
+    private void saveFormattedDate(String formattedDate) {
+        // TODO: Save the formatted date for later use
+        // You can store it in a class variable or any other desired location.
+    }
+
+    public void showTimePickerDialog() {
         // Get the current time from the device
         Calendar currentTime = Calendar.getInstance();
         int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
@@ -124,10 +163,83 @@ public class AppointmentsActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 selectedHour = hourOfDay;
                 selectedMinute = minute;
+
+                // TODO: Use the selected time for the appointment
             }
         }, currentHour, currentMinute, true);
 
         // Show the TimePickerDialog
         timePickerDialog.show();
+    }
+
+    private long getUserIdFromDatabase(String email) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String tableName = "users";
+        String[] projection = {"user_id"};
+
+        String selection = "email = ?";
+        String[] selectionArgs = {email};
+
+        Cursor cursor = db.query(tableName, projection, selection, selectionArgs, null, null, null);
+
+        long userId = -1;
+        if (cursor.moveToFirst()) {
+            userId = cursor.getLong(cursor.getColumnIndexOrThrow("user_id"));
+        }
+
+        cursor.close();
+        db.close();
+
+        return userId;
+    }
+
+    private void viewAppointments() {
+        // Retrieve appointments for the logged-in user
+        List<Appointment> appointments = getAppointmentsForUser(loggedInUserId);
+
+        // Create an instance of AppointmentsAdapter and set it to the ListView
+        AppointmentsAdapter appointmentsAdapter = new AppointmentsAdapter(this, appointments);
+        listView.setAdapter(appointmentsAdapter);
+    }
+
+    private List<Appointment> getAppointmentsForUser(long userId) {
+        List<Appointment> appointments = new ArrayList<>();
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String[] projection = {
+                COLUMN_APPOINTMENT_ID,
+                COLUMN_APPOINTMENT_TITLE,
+                COLUMN_APPOINTMENT_DESCRIPTION,
+                COLUMN_APPOINTMENT_DATE,
+                COLUMN_APPOINTMENT_TIME
+        };
+
+        String selection = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        Cursor cursor = db.query(TABLE_APPOINTMENTS, projection, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                long appointmentId = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_TITLE));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_DESCRIPTION));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_DATE));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_APPOINTMENT_TIME));
+
+                // Create an Appointment object and add it to the list
+                Appointment appointment = new Appointment(appointmentId, title, description, date, time);
+                appointments.add(appointment);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return appointments;
     }
 }

@@ -20,6 +20,7 @@ public class TitlePage extends AppCompatActivity {
     private ImageButton btnWellnessContent;
     private ImageButton btnGoalSetting;
     private String loggedInUserEmail;
+    private String loggedInUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,8 @@ public class TitlePage extends AppCompatActivity {
         btnAppointments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Pass the logged-in user's email to the MoodTrackerActivity
                 Intent intent = new Intent(TitlePage.this, AppointmentsActivity.class);
+                intent.putExtra("email", loggedInUserEmail);
                 startActivity(intent);
             }
         });
@@ -92,4 +93,5 @@ public class TitlePage extends AppCompatActivity {
 
         return name;
     }
+
 }
