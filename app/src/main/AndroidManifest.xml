@@ -39,6 +39,9 @@
         <activity
             android:name=".AppointmentsActivity"
             android:label="Appointments"/>
+        <activity
+            android:name=".GoalSettingActivity"
+            android:label="Goal Setting" />
 
     </application>
 

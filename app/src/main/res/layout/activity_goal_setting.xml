@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/etGoalTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Goal Title"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:inputType="textCapSentences"
+        android:maxLines="1"
+        android:imeOptions="actionNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/etGoalDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Goal Description"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:inputType="textCapSentences"
+        android:maxLines="3"
+        android:imeOptions="actionNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etGoalTitle"
+        app:layout_constraintBottom_toTopOf="@+id/etTargetValue" />
+
+    <EditText
+        android:id="@+id/etTargetValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Target Value"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:inputType="number"
+        android:imeOptions="actionNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etGoalDescription"
+        app:layout_constraintBottom_toTopOf="@+id/etTargetDate" />
+
+    <EditText
+        android:id="@+id/etTargetDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Target Date (YYYY-MM-DD)"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:inputType="datetime"
+        android:imeOptions="actionDone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTargetValue"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveGoal" />
+
+    <Button
+        android:id="@+id/btnSaveGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Goal"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTargetDate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTargetDate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

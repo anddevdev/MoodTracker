@@ -45,7 +45,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     private static final String COLUMN_APPOINTMENT_TIME = "time";
     private static final String TABLE_APPOINTMENTS = "appointments";
     private static final String COLUMN_USER_ID = "user_id";
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,7 @@ public class AppointmentsActivity extends AppCompatActivity {
         btnViewAppointments = findViewById(R.id.btnViewAppointments);
         etAppointmentTitle = findViewById(R.id.etAppointmentTitle);
         etAppointmentDescription = findViewById(R.id.etAppointmentDescription);
-        listView = findViewById(R.id.listViewAppointments);
+        listView = findViewById(R.id.linearAppointments);
 
         // Set click listener for calendar date selection
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "user_database";
-    private static final int DATABASE_VERSION =8;
+    private static final int DATABASE_VERSION =9;
     private static final String TABLE_USERS = "users";
     private static final String TABLE_MOODS = "moods";
     private static final String COLUMN_USER_ID = "user_id";
@@ -27,6 +27,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_APPOINTMENT_DESCRIPTION = "description";
     private static final String COLUMN_APPOINTMENT_DATE = "date";
     private static final String COLUMN_APPOINTMENT_TIME = "time";
+
+    private static final String TABLE_GOALS = "goals";
+    private static final String COLUMN_GOAL_ID = "goal_id";
+    private static final String COLUMN_GOAL_TITLE = "title";
+    private static final String COLUMN_GOAL_DESCRIPTION = "description";
+    private static final String COLUMN_GOAL_TARGET_VALUE = "target_value";
+    private static final String COLUMN_GOAL_TARGET_DATE = "target_date";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,6 +68,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_APPOINTMENT_TIME + " TEXT"
                 + ")";
         db.execSQL(createAppointmentsTableQuery);
+
+        String createGoalsTableQuery = "CREATE TABLE " + TABLE_GOALS + " ("
+                + COLUMN_USER_ID + " INTEGER,"
+                + COLUMN_GOAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_GOAL_DESCRIPTION + " TEXT,"
+                + COLUMN_GOAL_TITLE + " TEXT,"
+                + COLUMN_GOAL_TARGET_DATE + " TEXT,"
+                + COLUMN_GOAL_TARGET_VALUE + " TEXT"
+                + ")";
+        db.execSQL(createGoalsTableQuery);
 
     }
 
