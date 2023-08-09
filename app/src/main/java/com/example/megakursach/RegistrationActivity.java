@@ -56,8 +56,18 @@ public class RegistrationActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         // Perform input validation
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+        if (!isValidFullName(fullName)) {
+            etFullName.setError("Invalid full name");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            etEmail.setError("Invalid email address");
+            return;
+        }
+
+        if (!isValidPassword(password)) {
+            etPassword.setError("Password must be at least 6 characters");
             return;
         }
 
@@ -78,6 +88,19 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isValidFullName(String fullName) {
+        return !fullName.isEmpty();
+    }
+
+    private boolean isValidEmail(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(regex);
+    }
+
+    private boolean isValidPassword(String password) {
+        return password.length() >= 6;
     }
 
     private boolean checkUserExists(String email) {

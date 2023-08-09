@@ -49,8 +49,13 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         // Perform input validation
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+        if (!isValidEmail(email)) {
+            etEmail.setError("Invalid email address");
+            return;
+        }
+
+        if (password.isEmpty()) {
+            etPassword.setError("Password cannot be empty");
             return;
         }
 
@@ -67,9 +72,13 @@ public class LoginActivity extends AppCompatActivity {
             // Authentication failed
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
         }
-
-
     }
+
+    private boolean isValidEmail(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(regex);
+    }
+
 
     private boolean authenticateUser(String email, String password) {
         // Get a reference to the database
