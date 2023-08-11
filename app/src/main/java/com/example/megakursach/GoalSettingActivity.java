@@ -116,6 +116,9 @@ public class GoalSettingActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to save goal", Toast.LENGTH_SHORT).show();
         }
 
+        Log.d("GoalSettingActivity", "New goal added. Setting result code to RESULT_OK.");
+        setResult(RESULT_OK);
+
         // Close the database
         db.close();
 

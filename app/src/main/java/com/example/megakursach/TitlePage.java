@@ -1,3 +1,4 @@
+
 package com.example.megakursach;
 
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,7 @@ public class TitlePage extends AppCompatActivity {
     private TextView emptyView; // Added reference to the emptyView
     private String loggedInUserEmail;
     private long loggedInUserId;
+    private DatabaseHelper databaseHelper; // Added instance of DatabaseHelper
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ public class TitlePage extends AppCompatActivity {
         loggedInUserEmail = getIntent().getStringExtra("email");
         loggedInUserId = getUserIdFromDatabase(loggedInUserEmail);
         Log.d("TitlePage", "Received user_id: " + loggedInUserId);
+
+        // Initialize the databaseHelper instance
+        databaseHelper = new DatabaseHelper(this);
 
         tvProfileName = findViewById(R.id.profileName);
         btnAppointments = findViewById(R.id.btnAppointments);
@@ -56,19 +62,8 @@ public class TitlePage extends AppCompatActivity {
         String name = fetchUserNameFromDatabase(loggedInUserEmail);
         tvProfileName.setText(name);
 
-        List<Goal> goals = fetchUserGoalsFromDatabase(loggedInUserId);
-
         // Update the UI to display the user's goals
-        if (goals.isEmpty()) {
-            goalsRecyclerView.setVisibility(View.GONE); // Hide the RecyclerView
-            emptyView.setVisibility(View.VISIBLE); // Show the emptyView
-        } else {
-            goalsRecyclerView.setVisibility(View.VISIBLE); // Show the RecyclerView
-            emptyView.setVisibility(View.GONE); // Hide the emptyView
-            GoalsAdapter goalsAdapter = new GoalsAdapter(this, goals);
-            goalsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            goalsRecyclerView.setAdapter(goalsAdapter);
-        }
+        refreshGoals();
 
         btnMoodTracking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +89,7 @@ public class TitlePage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TitlePage.this, GoalSettingActivity.class);
                 intent.putExtra("email", loggedInUserEmail);
-                startActivity(intent);
+                startActivityForResult(intent, GOAL_SETTING_REQUEST_CODE);
             }
         });
 
@@ -150,15 +145,6 @@ public class TitlePage extends AppCompatActivity {
         // Create a list to hold the user's goals
         List<Goal> goals = new ArrayList<>();
 
-        // Set up the RecyclerView with the GoalsAdapter
-        RecyclerView goalsRecyclerView = findViewById(R.id.goalsRecyclerView);
-        GoalsAdapter goalsAdapter = new GoalsAdapter(this, goals);
-        goalsRecyclerView.setAdapter(goalsAdapter);
-
-        // Set a LinearLayoutManager to display the goals in a vertical list
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        goalsRecyclerView.setLayoutManager(layoutManager);
-
         // Iterate through the cursor and add goals to the list
         while (cursor.moveToNext()) {
             int goalId = cursor.getInt(cursor.getColumnIndexOrThrow("goal_id"));
@@ -202,4 +188,37 @@ public class TitlePage extends AppCompatActivity {
         return userId;
     }
 
+    // Method to refresh goals after adding a new goal
+    public void refreshGoals() {
+        Log.d("TitlePage", "Refreshing goals.");
+        List<Goal> goals = fetchUserGoalsFromDatabase(loggedInUserId);
+        // Update the UI to display the user's goals
+        if (goals.isEmpty()) {
+            Log.d("TitlePage", "Goals list is empty. Hiding RecyclerView, showing emptyView.");
+            goalsRecyclerView.setVisibility(View.GONE); // Hide the RecyclerView
+            emptyView.setVisibility(View.VISIBLE); // Show the emptyView
+        } else {
+            Log.d("TitlePage", "Goals list is not empty. Showing RecyclerView, hiding emptyView.");
+            goalsRecyclerView.setVisibility(View.VISIBLE); // Show the RecyclerView
+            emptyView.setVisibility(View.GONE); // Hide the emptyView
+            GoalsAdapter goalsAdapter = new GoalsAdapter(this, goals, databaseHelper); // Pass the databaseHelper instance here
+            goalsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            goalsRecyclerView.setAdapter(goalsAdapter);
+        }
+    }
+
+    // Define a constant for the goal setting request code
+    private static final int GOAL_SETTING_REQUEST_CODE = 1;
+
+    // Override onActivityResult to handle the result of the GoalSettingActivity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("TitlePage", "onActivityResult triggered. requestCode: " + requestCode + ", resultCode: " + resultCode);
+        if (requestCode == GOAL_SETTING_REQUEST_CODE && resultCode == RESULT_OK) {
+            Log.d("TitlePage", "New goal added. Refreshing goals.");
+            // A new goal was added, refresh the goals
+            refreshGoals();
+        }
+    }
 }

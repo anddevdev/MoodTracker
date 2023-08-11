@@ -100,4 +100,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public void deleteGoal(long goalId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_GOALS, COLUMN_GOAL_ID + " = ?", new String[]{String.valueOf(goalId)});
+        db.close();
+    }
+
 }
