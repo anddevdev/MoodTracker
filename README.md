@@ -1,4 +1,4 @@
-# MoodTracker is a wellness and goal-tracking Android app that helps users manage their wellness goals, appointments, track their mood, and more.
+# MoodTracker is a wellness and goal-tracking Android app that helps users manage their goals, appointments, track their mood, and more.
 
 # Features (work in progress)
 
