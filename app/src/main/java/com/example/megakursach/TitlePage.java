@@ -4,6 +4,7 @@ package com.example.megakursach;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,8 +101,6 @@ public class TitlePage extends AppCompatActivity {
             }
         });
 
-        // Set click listeners for other buttons (Appointments, Guided Meditation, etc.)
-        // ...
     }
 
     private String fetchUserNameFromDatabase(String email) {
@@ -205,6 +211,8 @@ public class TitlePage extends AppCompatActivity {
             goalsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             goalsRecyclerView.setAdapter(goalsAdapter);
         }
+        // Set up the mood chart
+        setupMoodPieChart(loggedInUserId);
     }
 
     // Define a constant for the goal setting request code
@@ -221,4 +229,75 @@ public class TitlePage extends AppCompatActivity {
             refreshGoals();
         }
     }
+
+    private void setupMoodPieChart(long userId) {
+        // Retrieve mood data from the database
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        List<MoodEntry> moodEntries = databaseHelper.getAllMoodEntries(userId);
+
+        // Initialize the PieChart
+        PieChart moodChart = findViewById(R.id.moodPieChart);
+        moodChart.setUsePercentValues(true);
+        moodChart.getDescription().setEnabled(false);
+        moodChart.setExtraOffsets(5, 10, 5, 5);
+        moodChart.setDragDecelerationFrictionCoef(0.95f);
+        moodChart.setDrawHoleEnabled(true);
+        moodChart.setHoleColor(Color.WHITE);
+        moodChart.setTransparentCircleRadius(61f);
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        int totalEntries = moodEntries.size();
+        int happyCount = 0;
+        int sadCount = 0;
+        int neutralCount = 0;
+
+        // Count mood occurrences
+        for (MoodEntry entry : moodEntries) {
+            if (entry.getMoodValue() == 1) {
+                happyCount++;
+            } else if (entry.getMoodValue() == 2) {
+                sadCount++;
+            } else if (entry.getMoodValue() == 3) {
+                neutralCount++;
+            }
+        }
+
+        // Add mood entries to the PieChart
+        if (totalEntries > 0) {
+            entries.add(new PieEntry((float) happyCount / totalEntries, "Happy"));
+            entries.add(new PieEntry((float) sadCount / totalEntries, "Sad"));
+            entries.add(new PieEntry((float) neutralCount / totalEntries, "Neutral"));
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Mood Distribution");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+        dataSet.setColors(Color.rgb(34, 139, 34), Color.rgb(255, 69, 0), Color.rgb(0, 0, 205));
+
+        PieData data = new PieData(dataSet);
+        data.setValueTextSize(10f);
+        data.setValueTextColor(Color.BLACK);
+
+        moodChart.setData(data);
+
+        // Set up the legend
+        Legend legend = moodChart.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setDrawInside(false);
+        legend.setXEntrySpace(7f);
+        legend.setYEntrySpace(0f);
+        legend.setYOffset(0f);
+
+        Description description = new Description();
+        description.setText("Mood Distribution");
+        moodChart.setDescription(description);
+
+        // Refresh the chart
+        moodChart.invalidate();
+    }
 }
+
+

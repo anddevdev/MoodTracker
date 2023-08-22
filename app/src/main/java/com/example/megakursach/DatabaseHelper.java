@@ -2,8 +2,12 @@ package com.example.megakursach;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -105,5 +109,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_GOALS, COLUMN_GOAL_ID + " = ?", new String[]{String.valueOf(goalId)});
         db.close();
     }
+    public List<MoodEntry> getAllMoodEntries(long userId) {
+        List<MoodEntry> moodEntries = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT mood_id FROM moods WHERE user_id = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                int moodValue = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_MOOD_ID));
+
+                MoodEntry moodEntry = new MoodEntry(moodValue);
+                moodEntries.add(moodEntry);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+        return moodEntries;
+    }
+
 
 }
