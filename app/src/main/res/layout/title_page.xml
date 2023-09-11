@@ -1,22 +1,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constraintLayout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
     <!-- Profile Picture -->
     <ImageView
         android:id="@+id/profilePicture"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="102dp"
 
         android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/profileName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4" />
 
     <!-- Profile Name -->
@@ -25,12 +25,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture"
         app:layout_constraintVertical_bias="0.05" />
 
     <!-- Appointments Button -->
+
+    <!-- Mood Tracking Button -->
+
+
+    <!-- Goal Setting Button -->
+
+    <!-- RecyclerView for Goals -->
+
+    <!-- Empty View (Placeholder when there are no goals) -->
+
     <ImageButton
         android:id="@+id/btnAppointments"
         android:layout_width="56dp"
@@ -39,97 +49,50 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_appointments"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/btnMoodTracking"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileName"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintTop_toBottomOf="@+id/goalsRecyclerView"
+        app:layout_constraintVertical_bias="0.813" />
 
-    <!-- Mood Tracking Button -->
     <ImageButton
         android:id="@+id/btnMoodTracking"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="50dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="12dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_mood_tracking"
-        android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
-        app:layout_constraintStart_toEndOf="@+id/btnAppointments"
-        app:layout_constraintEnd_toStartOf="@+id/btnGuidedMeditation"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
-        android:scaleType="fitCenter"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Guided Meditation Button -->
-    <ImageButton
-        android:id="@+id/btnGuidedMeditation"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_guided_meditation"
-        android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
-        app:layout_constraintStart_toEndOf="@+id/btnMoodTracking"
-        app:layout_constraintEnd_toStartOf="@+id/btnSupportCommunity"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
-        android:scaleType="fitCenter"/>
-
-    <!-- Support & Community Button -->
-    <ImageButton
-        android:id="@+id/btnSupportCommunity"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_support_community"
-        android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
-        app:layout_constraintStart_toEndOf="@+id/btnGuidedMeditation"
-        app:layout_constraintEnd_toStartOf="@+id/btnWellnessContent"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
-        android:scaleType="fitCenter"/>
-
-    <!-- Wellness Content Button -->
-    <ImageButton
-        android:id="@+id/btnWellnessContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_wellness_content"
-        android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
-        app:layout_constraintStart_toEndOf="@+id/btnSupportCommunity"
-        app:layout_constraintEnd_toStartOf="@+id/btnGoalSetting"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
-        android:scaleType="fitCenter"/>
-
-    <!-- Goal Setting Button -->
     <ImageButton
         android:id="@+id/btnGoalSetting"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_goal_setting"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
         android:background="?android:attr/selectableItemBackground"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/btnAppointments"
-        app:layout_constraintStart_toEndOf="@+id/btnWellnessContent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_goal_setting"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/btnAppointments"
-        android:scaleType="fitCenter"/>
-
-    <!-- RecyclerView for Goals -->
-
-    <!-- Empty View (Placeholder when there are no goals) -->
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toEndOf="@+id/btnMoodTracking"
+        app:layout_constraintTop_toBottomOf="@+id/goalsRecyclerView"
+        app:layout_constraintVertical_bias="0.813" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/goalsRecyclerView"
         android:layout_width="413dp"
         android:layout_height="162dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnMoodTracking"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnMoodTracking"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePicture"
-        app:layout_constraintVertical_bias="0.618" />
+        app:layout_constraintVertical_bias="0.844" />
 
     <TextView
         android:id="@+id/emptyView"
@@ -138,10 +101,10 @@
         android:text="You have no goals yet."
         android:textSize="16sp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/goalsRecyclerView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goalsRecyclerView"
         app:layout_constraintVertical_bias="0.5" />
 
     <com.github.mikephil.charting.charts.PieChart

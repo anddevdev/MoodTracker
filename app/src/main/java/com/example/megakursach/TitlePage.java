@@ -31,9 +31,6 @@ public class TitlePage extends AppCompatActivity {
     private TextView tvProfileName;
     private ImageButton btnAppointments;
     private ImageButton btnMoodTracking;
-    private ImageButton btnGuidedMeditation;
-    private ImageButton btnSupport;
-    private ImageButton btnWellnessContent;
     private ImageButton btnGoalSetting;
     private RecyclerView goalsRecyclerView;
     private TextView emptyView; // Added reference to the emptyView
@@ -56,9 +53,6 @@ public class TitlePage extends AppCompatActivity {
         tvProfileName = findViewById(R.id.profileName);
         btnAppointments = findViewById(R.id.btnAppointments);
         btnMoodTracking = findViewById(R.id.btnMoodTracking);
-        btnGuidedMeditation = findViewById(R.id.btnGuidedMeditation);
-        btnSupport = findViewById(R.id.btnSupportCommunity);
-        btnWellnessContent = findViewById(R.id.btnWellnessContent);
         btnGoalSetting = findViewById(R.id.btnGoalSetting);
         goalsRecyclerView = findViewById(R.id.goalsRecyclerView);
         emptyView = findViewById(R.id.emptyView);
